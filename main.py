@@ -1,6 +1,15 @@
 from fastmcp import FastMCP
+import os
 
-mcp = FastMCP(name="Notes mcp")
+# Get the Cloud Run port (default to 8080 if not set)
+port = int(os.environ.get("PORT", 8080))
+
+mcp = FastMCP(
+    name="User Demo MCP",
+    transport="http",
+    host="0.0.0.0",  # Must be 0.0.0.0 for Cloud Run
+    port=port
+)
 
 notes = []
 
@@ -35,7 +44,12 @@ def add_notes(note:str) -> str:
 def system_prompt():
     """You are a fun assistant you should be making a fun joke of each note they add"""
     return """You are a fun assistant you should be making a fun joke of each note they add"""
-    
+
+
+
+
+if __name__ == "__main__":
+    mcp.run()
 
 
 if __name__ == "__main__":
