@@ -6,7 +6,7 @@ port = int(os.environ.get("PORT", 8080))
 
 mcp = FastMCP(
     name="User Demo MCP",
-    transport="http",          # ← This enables HTTP server mode
+    transport='streamable-http',          # ← This enables HTTP server mode
     host="0.0.0.0",            # ← Required for Cloud Run
     port=port                  # ← Must match PORT env var
 )
