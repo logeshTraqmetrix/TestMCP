@@ -6,9 +6,9 @@ port = int(os.environ.get("PORT", 8080))
 
 mcp = FastMCP(
     name="User Demo MCP",
-    transport="http",
-    host="0.0.0.0",  # Must be 0.0.0.0 for Cloud Run
-    port=port
+    transport="http",          # ← This enables HTTP server mode
+    host="0.0.0.0",            # ← Required for Cloud Run
+    port=port                  # ← Must match PORT env var
 )
 
 notes = []
@@ -16,43 +16,29 @@ notes = []
 @mcp.tool()
 def get_notes() -> list:
     """
-    This tool used to get all the notes
-    
-    no arguments
-
-    return list of notes
+    Get all the notes.
+    No arguments.
+    Returns a list of notes.
     """
     return notes
 
 @mcp.tool()
-def add_notes(note:str) -> str:
+def add_notes(note: str) -> str:
     """
-    This tool helps to add note in notes
-
-    args:
-    note : String
-
-    return String
+    Add a note to the list.
+    Args:
+        note (str): The note to add.
+    Returns:
+        str: Confirmation message.
     """
-
     notes.append(note)
-
-    return f"Your note {note} added successfully"
-
+    return f"Your note '{note}' was added successfully!"
 
 @mcp.prompt
 def system_prompt():
-    """You are a fun assistant you should be making a fun joke of each note they add"""
-    return """You are a fun assistant you should be making a fun joke of each note they add"""
+    """You are a fun assistant who makes a fun joke about each note they add."""
+    return "You are a fun assistant who makes a fun joke about each note they add."
 
-
-
-
+# Only run once — with HTTP server
 if __name__ == "__main__":
-    mcp.run()
-
-
-if __name__ == "__main__":
-    mcp.run(
-        transport='streamable-http'
-    )
+    mcp.run()  # ← Uses 'http' transport from constructor
